@@ -1,0 +1,158 @@
+body,html {
+}
+@font-face {
+  font-family: radnika-black;
+  src: url("fonts/Radnika-Black.otf");
+}
+@font-face {
+  font-family: radnika-bold;
+  src: url("fonts/Radnika-Bold.otf");
+}
+@font-face {
+  font-family: radnika-regular;
+  src: url("fonts/Radnika-Regular.otf");
+}
+@font-face {
+  font-family: radnika-condensed;
+  src: url("fonts/Radnika-Condensed.otf");
+}
+@font-face {
+  font-family: radnika-medium;
+  src: url("fonts/Radnika-Medium.otf");
+}
+@font-face {
+  font-family: stratum-medium;
+  src: url("fonts/Stratum2-Medium.otf");
+}
+@font-face {
+  font-family: stratum-regular;
+  src: url("fonts/Stratum2-Regular.otf");
+}
+
+#title {
+  position: relative;
+  margin: 0 auto;
+  min-width: 430px;
+  max-width: 650px;
+  margin-top: 50px;
+}
+h1 {
+  font-family: radnika-black;
+  font-size: 30px;
+  text-align: center;
+  margin: 0;
+}
+h3 {
+  font-family: radnika-medium;
+  font-size: 14px;
+  text-align: center;
+}
+h5 {
+  margin: 8px;
+  color: #a19da8;
+  font-family: radnika-regular;
+}
+#title-line {
+  stroke-width: 2;
+  stroke: #a19da8;
+}
+#graphic-left {
+  position: relative;
+  float: left;
+  max-width: 250px;
+}
+#graphic-right {
+  position: relative;
+  float: right;
+  min-width: 650px;
+  max-width: 650px;
+}
+#graphic-right-options {
+  position: relative;
+  min-width: 500px;
+  max-width: 500px;
+  margin-top: 20px;
+  height: 60px;
+  padding: 0.5em;
+  border: 1.3px solid #a19da8;
+}
+#graphic-right-slider {
+  position: relative;
+  margin: 0;
+  width: 270px;
+  float: left;
+}
+#graphic-right-button {
+  position: relative;
+  margin: 0px;
+  width: 200px;
+  float: right;
+}
+.slidecontainer {
+  width: 100%;
+}
+.slider {
+  -webkit-appearance: none;
+  position: absolute;
+  margin: 8px;
+  height: 10px;
+  width: 270px;
+  background: rgb(200,200,200);
+  opacity: 0.8;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+/* Mouse-over effects */
+.slider:hover {
+  opacity: 1;
+}
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Override default look */
+    appearance: none;
+    width: 10px; /* Set a specific slider handle width */
+    height: 20px; /* Slider handle height */
+    background: rgb(79,39,79);
+    cursor: pointer; /* Cursor on hover */
+}
+.slider::-moz-range-thumb {
+    width: 10px; /* Set a specific slider handle width */
+    height: 20px; /* Slider handle height */
+    background: rgb(79,39,79);
+    cursor: pointer; /* Cursor on hover */
+}
+button {
+  background-color: none;
+  font-size: 14px;
+  border-radius: 3px;
+  width: 70px;
+  height: 25px;
+  font-weight: 600;
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.4s;
+  color: #a19da8;
+  border: 1.5px solid #a19da8;
+  font-family: stratum-medium;
+}
+#button-alpha {
+  width: 123px;
+}
+#graphic-right-svg {
+  padding: 0.5em;
+  height: 600px;
+  max-width: 500px;
+}
+.nameText {
+  font-family: radnika-bold;
+  font-size: 25px;
+}
+.pairDot {
+  opacity: 0.8;
+}
+.pairLine {
+  stroke-width: 1px;
+}
+.tickText {
+  font-family: stratum-regular;
+  font-size: 10px;
+  fill: #a19da8;
+}

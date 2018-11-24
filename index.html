@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Nexus Blitz Jungler Pairs</title>
+	<link type="text/css" href="css/main.css" rel="stylesheet"/>
+
+</head>
+<body>
+	<section id="title">
+		<h1 id="title-text">Title</h1>
+		<h3 id="subtitle-text">Subtitle</h3>
+		<svg id="title-svg" height="20px", width="100%">
+			<line id="title-line" x1="0" x2="700" y1="10" y2="10">
+		</svg>
+	</section>
+	<section id="graphic">
+		<section id="graphic-left">
+			<svg id="graphic-left-svg" height="100%" width="100%"></svg>
+		</section>
+		<section id="graphic-right">
+			<section id="graphic-right-options">
+				<div id=graphic-right-slider>
+					<h5>Show pairs with at least <b>50</b> games played:</h5>
+					<input id="slider" class="slider" type="range" min="0" max="8" step="1" value="4" orient="horizontal"></input>
+				</div>
+				<div id="graphic-right-button">
+					<h5>Sort by:</h5>
+					<button type="button" id="button-win" value="count">Win rate</button>
+					<button type="button" id="button-alpha" value="alpha">Champion name</button>
+				</div>
+			</section>
+			<svg id="graphic-right-svg" height="100%" width="100%"></svg>
+		</section>
+	</section>
+
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+	<script src="js/right-graphic.js"></script>
+
+</body>
+</html>
