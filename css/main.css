@@ -28,12 +28,11 @@ body,html {
   font-family: stratum-regular;
   src: url("fonts/Stratum2-Regular.otf");
 }
-
 #title {
   position: relative;
   margin: 0 auto;
-  min-width: 430px;
-  max-width: 650px;
+  min-width: 690px;
+  max-width: 800px;
   margin-top: 50px;
 }
 h1 {
@@ -56,37 +55,38 @@ h5 {
   stroke-width: 2;
   stroke: #a19da8;
 }
-#graphic-left {
+#graphic {
   position: relative;
+  margin: 0 auto;
+  min-width: 690px;
+  max-width: 800px;
+}
+#options {
+  max-width: 800px;
+  min-width: 690px;
+}
+#champion-name {
+  font-family: radnika-bold;
+  font-size: 25px;
   float: left;
-  max-width: 250px;
+  max-width: 100px;
+  margin: 1em;
 }
-#graphic-right {
-  position: relative;
-  float: right;
-  min-width: 650px;
-  max-width: 650px;
+#slider-button-container {
+  width: 550px;
+  float:right;
 }
-#graphic-right-options {
+#slider {
   position: relative;
-  min-width: 500px;
-  max-width: 500px;
-  margin-top: 20px;
-  height: 60px;
-  padding: 0.5em;
-  border: 1.3px solid #a19da8;
-}
-#graphic-right-slider {
-  position: relative;
-  margin: 0;
   width: 270px;
   float: left;
+  margin: 1em;
 }
-#graphic-right-button {
+#button-section {
   position: relative;
-  margin: 0px;
   width: 200px;
   float: right;
+  margin: 1em;
 }
 .slidecontainer {
   width: 100%;
@@ -136,23 +136,40 @@ button {
 #button-alpha {
   width: 123px;
 }
-#graphic-right-svg {
-  padding: 0.5em;
-  height: 600px;
-  max-width: 500px;
+#graphic-svg {
+  margin-top: 10px;
+  height: 2500px;
+  min-width: 500px;
+  max-width: 700px;
 }
-.nameText {
-  font-family: radnika-bold;
-  font-size: 25px;
+.pairNameText {
+  font-size: 12px;
+  text-anchor: end;
+  font-family: radnika-regular;
+  cursor: pointer;
 }
-.pairDot {
-  opacity: 0.8;
+.breakline {
+  stroke: gray;
+  stroke-width: 0.1;
 }
-.pairLine {
-  stroke-width: 1px;
+.dotDistance {
+  opacity: 0.5;
+  fill: rgb(100,100,100);
 }
-.tickText {
-  font-family: stratum-regular;
-  font-size: 10px;
+.countLabel {
+  font-size: 12px;
+  font-family: stratum-medium;
+}
+.midline {
+  stroke-width: 2;
+  opacity: .4;
+}
+.background {
+  fill: white;
+}
+.dataLabel {
+  font-size: 12px;
+  font-family: stratum-medium;
   fill: #a19da8;
+  text-anchor: middle;
 }
