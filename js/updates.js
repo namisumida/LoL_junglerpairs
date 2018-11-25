@@ -36,8 +36,11 @@ var updateData = function() {
   if (sort == "win") {
     champ_subset.sort(function(a,b) { return d3.descending(a.winrate, b.winrate); })
   }
-  else {
+  else if (sort == "alpha") {
     champ_subset.sort(function(a,b) { return d3.ascending(a.champ2, b.champ2); })
+  }
+  else {
+    champ_subset.sort(function(a,b) { return d3.descending(a.n_games, b.n_games); })
   }
   // Update nPairs
   nPairs = champ_subset.length;
@@ -47,7 +50,6 @@ var updateData = function() {
 var updateClick = function() {
   dotGroup.on("click", function(d) {
     var currElement = d3.select(this);
-    initialMouse = false;
 
     // Remove on click attributes for all (mainly previously clicked element)
     svg.selectAll(".countLabel")
@@ -87,20 +89,32 @@ var updateSizing = function() {
 // update button
 var updateButton = function(button) {
   // Update buttons
-  var otherButtonID;
   var value = button._groups[0][0].value;
 
   // change button to selected styles
-  button.style("background-color", d3.color("#a19da8"))
+  button.style("background-color", d3.rgb(79,39,79))
         .style("color", "white");
 
   // assign other button
   if (value == "win") {
-    otherButtonID = "#button-alpha";
+    d3.select("#button-alpha").style("background-color", "white")
+                             .style("color", d3.color("#a19da8"));
+    d3.select("#button-play").style("background-color", "white")
+                             .style("color", d3.color("#a19da8"));
   }
-  else { otherButtonID = "#button-win"; }
-  d3.select(otherButtonID).style("background-color", "white")
-                          .style("color", d3.color("#a19da8"));
+  else if (value == "play") {
+    d3.select("#button-alpha").style("background-color", "white")
+                             .style("color", d3.color("#a19da8"));
+    d3.select("#button-win").style("background-color", "white")
+                             .style("color", d3.color("#a19da8"));
+  }
+  else if (value == "alpha") {
+    d3.select("#button-win").style("background-color", "white")
+                             .style("color", d3.color("#a19da8"));
+    d3.select("#button-play").style("background-color", "white")
+                             .style("color", d3.color("#a19da8"));
+  }
+
 }; // end update button
 
 // Update
@@ -150,7 +164,7 @@ var updateGraphic = function() {
              return (graphicMargin.h_col+graphicMargin.h_btwn)*i;
            })
            .style("fill", light_gray)
-           .style("opacity", .4);
+           .style("opacity", .5);
   nameGroupEnter.append("rect")
            .attr("class", "background")
            .attr("id", "nameBackground")
@@ -231,10 +245,7 @@ var updateGraphic = function() {
              return (graphicMargin.h_col+graphicMargin.h_btwn)*i + graphicMargin.h_col/2 +4;
            })
            .text(function(d) {
-             if (initialMouse) {
-               return "# of games played: " + d3.format(",")(d.n_games);
-             }
-             else { return d3.format(",")(d.n_games); }
+             return "# of games played: " + d3.format(",")(d.n_games);
            })
            .style("text-anchor", function(d) {
              if (+(d.winrate).toFixed(2) > currAvg) {
@@ -362,10 +373,7 @@ var updateGraphic = function() {
              return (graphicMargin.h_col+graphicMargin.h_btwn)*i + graphicMargin.h_col/2 +4;
            })
            .text(function(d) {
-             if (initialMouse) {
-               return "# of games played: " + d3.format(",")(d.n_games);
-             }
-             else { return d3.format(",")(d.n_games); }
+             return "# of games played: " + d3.format(",")(d.n_games);
            })
            .style("text-anchor", function(d) {
              if (+(d.winrate).toFixed(2) > currAvg) {
