@@ -31,9 +31,8 @@ body,html {
 #title {
   position: relative;
   margin: 0 auto;
-  min-width: 690px;
-  max-width: 800px;
-  margin-top: 50px;
+  width: 690px;
+  margin-top: 30px;
 }
 h1 {
   font-family: radnika-black;
@@ -44,7 +43,10 @@ h1 {
 h3 {
   font-family: radnika-medium;
   font-size: 14px;
-  text-align: center;
+}
+p {
+  font-family: radnika-regular;
+  font-size: 13px;
 }
 h5 {
   margin: 8px;
@@ -69,18 +71,18 @@ h5 {
   font-family: radnika-bold;
   font-size: 25px;
   float: left;
-  max-width: 100px;
+  max-width: 200px;
   margin: 1em;
 }
 #slider-button-container {
-  width: 550px;
   float:right;
 }
-#slider {
+#slider-container {
   position: relative;
-  width: 270px;
   float: left;
   margin: 1em;
+  margin-left: 0;
+  width: 330px;
 }
 #button-section {
   position: relative;
@@ -96,11 +98,12 @@ h5 {
   position: absolute;
   margin: 8px;
   height: 10px;
-  width: 270px;
+  width: 100%;
   background: rgb(200,200,200);
   opacity: 0.8;
   -webkit-transition: .2s;
   transition: opacity .2s;
+  cursor: pointer;
 }
 /* Mouse-over effects */
 .slider:hover {
@@ -110,13 +113,13 @@ h5 {
     -webkit-appearance: none; /* Override default look */
     appearance: none;
     width: 10px; /* Set a specific slider handle width */
-    height: 20px; /* Slider handle height */
+    height: 25px; /* Slider handle height */
     background: rgb(79,39,79);
     cursor: pointer; /* Cursor on hover */
 }
 .slider::-moz-range-thumb {
     width: 10px; /* Set a specific slider handle width */
-    height: 20px; /* Slider handle height */
+    height: 25px; /* Slider handle height */
     background: rgb(79,39,79);
     cursor: pointer; /* Cursor on hover */
 }
@@ -132,15 +135,19 @@ button {
   color: #a19da8;
   border: 1.5px solid #a19da8;
   font-family: stratum-medium;
+  cursor: pointer;
+}
+#button-win {
+  background-color: #a19da8;
+  color: white;
 }
 #button-alpha {
   width: 123px;
 }
 #graphic-svg {
   margin-top: 10px;
-  height: 2500px;
   min-width: 500px;
-  max-width: 700px;
+  max-width: 800px;
 }
 .pairNameText {
   font-size: 12px;
@@ -157,7 +164,7 @@ button {
   fill: rgb(100,100,100);
 }
 .countLabel {
-  font-size: 12px;
+  font-size: 13px;
   font-family: stratum-medium;
 }
 .midline {
@@ -168,8 +175,8 @@ button {
   fill: white;
 }
 .dataLabel {
-  font-size: 12px;
+  font-size: 13px;
   font-family: stratum-medium;
-  fill: #a19da8;
+  fill: rgb(100,100,100);
   text-anchor: middle;
 }

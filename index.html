@@ -12,21 +12,23 @@
 	<section id="title">
 		<h1 id="title-text">Title</h1>
 		<h3 id="subtitle-text">Subtitle</h3>
+		<p id="instructions">Each circle represents a win rate for a pairing. Click on each circle to find out more about a given pairing.
+		To explore a new champion and their paired win rates, click on a new champion name in the list. Lastly, use the slider to change the minimum threshold of the number of games that the win rate is based on.</p>
+	</section>
+	<section id="graphic">
 		<svg id="title-svg" height="20px", width="100%">
 			<line id="title-line" x1="0" x2="800" y1="10" y2="10">
 		</svg>
-	</section>
-	<section id="graphic">
 		<section id="options">
 			<h2 id="champion-name">Nunu</h2>
 			<div id="slider-button-container">
-				<div id=slider>
-					<h5>Show pairs with at least <b>50</b> games played:</h5>
-					<input id="slider" class="slider" type="range" min="0" max="8" step="1" value="4" orient="horizontal"></input>
+				<div id="slider-container">
+					<h5 id="slider-instructions">Show pairs with at least <b>200</b> games played:</h5>
+					<input id="slider" class="slider" type="range" min="137" max="12567" step="1" value="200" orient="horizontal"></input>
 				</div>
 				<div id="button-section">
 					<h5>Sort by:</h5>
-					<button type="button" id="button-win" value="count">Win rate</button>
+					<button type="button" id="button-win" value="win">Win rate</button>
 					<button type="button" id="button-alpha" value="alpha">Champion name</button>
 				</div>
 			</div>
@@ -36,7 +38,7 @@
 
   <script src="https://d3js.org/d3.v4.min.js"></script>
 	<script src="js/avgWin.js"></script>
-	<script src="js/interactivity.js"></script>
+	<script src="js/updates.js"></script>
 	<script src="js/build.js"></script>
 
 </body>

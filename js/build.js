@@ -1,11 +1,12 @@
 var svg = d3.select("#graphic-svg");
 var w_svg = document.getElementById("graphic-svg").getBoundingClientRect().width;
-var margin = { left: 5, right: 32, top: 60, bottom: 0 }
-var graphicMargin = { w:(w_svg-margin.left-margin.right), w_names:65, btwn_names:35, h_col:13, h_btwn:3 };
-var w_dotLine = graphicMargin.w-(margin.left+graphicMargin.w_names+graphicMargin.btwn_names);
+var margin = { left: 5, right: 40, top: 60, bottom: 0 }
+var graphicMargin = { w:(w_svg-margin.left-margin.right), w_names:70, btwn_names:35, h_col:13, h_btwn:5 };
+var w_dotLine = graphicMargin.w-graphicMargin.w_names-graphicMargin.btwn_names;
 
 // Datasets
 var dataset, champ_subset, currChampionName, currAvg, nPairs, sort, pairGroup, dotGroup, nameGroup;
+var initialMouse = true;
 var rowConverter = function(d) {
   return {
     champ1: d.champ1,
@@ -15,65 +16,12 @@ var rowConverter = function(d) {
   }
 };
 
-// Scales
-var xScale_win;
-var updatexScale_win = function(subset) {
-  xScale_win = d3.scaleLinear()
-                 .domain([d3.min(subset, function(d) { return d.winrate; }), d3.max(subset, function(d) { return d.winrate; })])
-                 .range([margin.left+graphicMargin.w_names+graphicMargin.btwn_names, margin.left+graphicMargin.w_names+graphicMargin.btwn_names+w_dotLine]);
-};
-var xScale_play;
-var updatexScale_play = function(subset) {
-  xScale_play = d3.scaleLinear()
-                   .domain([d3.min(subset, function(d) { return d.n_games; }), d3.max(subset, function(d) { return d.n_games; })])
-                   .range([margin.left+graphicMargin.w_names+graphicMargin.btwn_names, margin.left+graphicMargin.w_names+graphicMargin.btwn_names+w_dotLine]);
-};
+// Scale
+var xScale_win = d3.scaleLinear()
+                   .domain([0,1])
+                   .range([1, w_dotLine]);
 
-// Function to update champion
-var updateChampion = function(champ) {
-  currChampionName = champ; // set champ name
-  // Get average
-  var avgDataRow = avg_data.filter(function(d) { return d.queueid==1200 & d.champion == champ; })[0];
-  currAvg = +(avgDataRow.nwins/avgDataRow.ngames).toFixed(2);
-  // Get subset
-  champ_subset = dataset.filter(function(d) { return d.champ1 == champ; });
-  if (sort == "win") {
-    champ_subset.sort(function(a,b) { return d3.descending(a.winrate, b.winrate); })
-  }
-  else {
-    champ_subset.sort(function(a,b) { return d3.ascending(a.champ2, b.champ2); })
-  }
-  // Update xScales
-  updatexScale_win(champ_subset);
-  updatexScale_play(champ_subset);
-  // Update nPairs
-  nPairs = champ_subset.length;
-}; // end update champion function
-
-// On click
-var updateClick = function() {
-  dotGroup.on("click", function(d) {
-    var currElement = d3.select(this);
-
-    // Remove on click attributes for all (mainly previously clicked element)
-    svg.selectAll(".countLabel")
-       .style("fill", "none");
-    svg.selectAll(".pairBar")
-       .style("fill", light_gray);
-    svg.selectAll(".dotDistance")
-       .style("opacity", 0.5);
-    svg.selectAll(".pairNameText")
-       .style("font-family", "radnika-regular");
-    currElement.selectAll(".countLabel")
-               .style("fill", "black");
-    currElement.select(".pairBar")
-               .style("fill", dotColor);
-    currElement.select(".dotDistance")
-               .style("opacity", 1);
-    currElement.select(".pairNameText")
-               .style("font-family", "radnika-bold");
-  }); // end on click
-};
+var sliderValue = parseInt(d3.select(".slider").node().value);
 
 // Text wrap function
 function wrap(text, width) {
@@ -111,10 +59,11 @@ function wrap(text, width) {
 
 // Colors
 var green = "green";
-var red = "red";
+var red = d3.rgb(212,89,84);
 var gray = d3.color("#a19da8");
 var dark_gray = d3.rgb(100,100,100);
 var dotColor = d3.color("#f6bba8");
+var dark_dotColor = d3.rgb(255, 126, 98);
 var highlightColor = d3.rgb(79,39,79);
 var light_gray = d3.rgb(200,200,200);
 
@@ -127,12 +76,13 @@ d3.csv('data/jungler_pair_long.csv', rowConverter, function(data) {
    // Initial setting
    sort = "win";
    updateChampion("Nunu");
+   updateData();
 
   // Create base elements
   svg.append("line")
       .attr("class", "midline")
-      .attr("x1", margin.left+xScale_win(currAvg))
-      .attr("x2", margin.left+xScale_win(currAvg))
+      .attr("x1", margin.left+graphicMargin.w_names+graphicMargin.btwn_names+xScale_win(currAvg))
+      .attr("x2", margin.left+graphicMargin.w_names+graphicMargin.btwn_names+xScale_win(currAvg))
       .attr("y1", margin.top)
       .attr("y2", margin.top + (graphicMargin.h_col + graphicMargin.h_btwn)*(nPairs-1) + graphicMargin.h_col/2)
       .style("stroke", gray);
@@ -142,37 +92,29 @@ d3.csv('data/jungler_pair_long.csv', rowConverter, function(data) {
      .attr("y", margin.top-25)
      .attr("class", "dataLabel")
      .attr("id", "nameDataLabel")
-     .call(wrap, 40)
+     .call(wrap, 50)
      .style("text-anchor", "end");
   svg.append("text")
-     .text("# of games played")
-     .attr("x", margin.left+graphicMargin.w_names+20)
-     .attr("y", margin.top-25)
-     .attr("class", "dataLabel")
-     .attr("id", "barDataLabel")
-     .call(wrap, 60)
-     .style("text-anchor", "start");
-  svg.append("text")
-     .text("Individual win rate")
-     .attr("x", margin.left+xScale_win(currAvg))
+     .text("Individual win rate: " + d3.format(".0%")(currAvg))
+     .attr("x", margin.left+graphicMargin.w_names+graphicMargin.btwn_names+xScale_win(currAvg))
      .attr("y", margin.top-40)
      .attr("class", "dataLabel")
      .attr("id", "avgDataLabel")
-     .call(wrap, 40);
+     .call(wrap, 60);
   svg.append("text")
      .text("Paired win rate")
-     .attr("x", margin.left+xScale_win(champ_subset[0].winrate))
+     .attr("x", margin.left+graphicMargin.w_names+graphicMargin.btwn_names+xScale_win(+champ_subset[0].winrate.toFixed(2)))
      .attr("y", margin.top-25)
      .attr("class", "dataLabel")
      .attr("id", "pairDataLabel")
-     .call(wrap, 40);
+     .call(wrap, 50);
   // Pairs
   pairGroup = svg.selectAll("pairGroup")
                   .data(champ_subset)
                   .enter()
                   .append("g")
                   .attr("class", "pairGroup")
-                  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+                  .attr("transform", "translate(0," + margin.top + ")");
   dotGroup = pairGroup.append("g")
                       .attr("class", "dotGroup");
   nameGroup = pairGroup.append("g")
@@ -180,11 +122,11 @@ d3.csv('data/jungler_pair_long.csv', rowConverter, function(data) {
   dotGroup.append("rect") // to allow clickability between name and rect
            .attr("class", "background")
            .attr("id", "dotBackground")
-           .attr("x", 0)
+           .attr("x", margin.left+graphicMargin.w_names)
            .attr("y", function(d,i) {
             return (graphicMargin.h_col+graphicMargin.h_btwn)*i;
            })
-           .attr("width", graphicMargin.w + margin.right)
+           .attr("width", w_dotLine+graphicMargin.btwn_names+margin.right)
            .attr("height", graphicMargin.h_col);
   dotGroup.append("rect")
            .attr("class", "pairBar")
@@ -192,7 +134,12 @@ d3.csv('data/jungler_pair_long.csv', rowConverter, function(data) {
              return xScale_play(d.n_games);
            })
            .attr("height", graphicMargin.h_col)
-           .attr("x", margin.left+graphicMargin.w_names+5)
+           .attr("x", function(d) {
+             if (d.winrate > currAvg) {
+               return margin.left+graphicMargin.w_names+graphicMargin.btwn_names+xScale_win(currAvg);
+             }
+             else { return margin.left+graphicMargin.w_names+graphicMargin.btwn_names+xScale_win(currAvg)-xScale_play(d.n_games); }
+           })
            .attr("y", function(d,i) {
              return (graphicMargin.h_col+graphicMargin.h_btwn)*i;
            })
@@ -221,10 +168,10 @@ d3.csv('data/jungler_pair_long.csv', rowConverter, function(data) {
             .attr("x", function(d) {
               var winRate = +(d.winrate).toFixed(2)
               if (winRate > currAvg) {
-                return xScale_win(currAvg);
+                return margin.left+graphicMargin.w_names+graphicMargin.btwn_names+xScale_win(currAvg);
               }
               else {
-                return xScale_win(+(winRate).toFixed(2));
+                return margin.left+graphicMargin.w_names+graphicMargin.btwn_names+xScale_win(+(winRate).toFixed(2));
               }
             })
             .attr("y", function(d,i) {
@@ -237,7 +184,7 @@ d3.csv('data/jungler_pair_long.csv', rowConverter, function(data) {
   dotGroup.append("circle") // average dot
            .attr("class", "avgDot")
            .attr("cx", function(d) {
-             return xScale_win(currAvg);
+             return margin.left+graphicMargin.w_names+graphicMargin.btwn_names+xScale_win(currAvg);
            })
            .attr("cy", function(d,i) {
              return (graphicMargin.h_col+graphicMargin.h_btwn)*i + graphicMargin.h_col/2;
@@ -247,7 +194,7 @@ d3.csv('data/jungler_pair_long.csv', rowConverter, function(data) {
   dotGroup.append("circle") // pair dot
            .attr("class", "pairDot")
            .attr("cx", function(d) {
-             return xScale_win(+(d.winrate).toFixed(2));
+             return margin.left+graphicMargin.w_names+graphicMargin.btwn_names+xScale_win(+(d.winrate).toFixed(2));
            })
            .attr("cy", function(d,i) {
              return (graphicMargin.h_col+graphicMargin.h_btwn)*i + graphicMargin.h_col/2;
@@ -267,18 +214,21 @@ d3.csv('data/jungler_pair_long.csv', rowConverter, function(data) {
            });
   dotGroup.append("text")
            .attr("class", "countLabel")
-           .attr("id", "avgCountLabel")
+           .attr("id", "gamesCountLabel")
            .attr("x", function(d) {
              if (+(d.winrate).toFixed(2) > currAvg) {
-               return xScale_win(currAvg) - 8;
+               return margin.left+graphicMargin.w_names+graphicMargin.btwn_names+xScale_win(currAvg) - 8;
              }
-             else { return xScale_win(currAvg) + 8; };
+             else { return margin.left+graphicMargin.w_names+graphicMargin.btwn_names+xScale_win(currAvg) + 8; };
            })
            .attr("y", function(d,i) {
              return (graphicMargin.h_col+graphicMargin.h_btwn)*i + graphicMargin.h_col/2 +4;
            })
            .text(function(d) {
-             return d3.format(".0%")(currAvg);
+             if (initialMouse) {
+               return "# of games played: " + d3.format(",")(d.n_games);
+             }
+             else { return d3.format(",")(d.n_games); }
            })
            .style("text-anchor", function(d) {
              if (+(d.winrate).toFixed(2) > currAvg) {
@@ -293,9 +243,9 @@ d3.csv('data/jungler_pair_long.csv', rowConverter, function(data) {
            .attr("x", function(d) {
              var roundedAvg = +(d.winrate).toFixed(2);
              if (roundedAvg > currAvg) {
-               return xScale_win(roundedAvg) + 8;
+               return margin.left+graphicMargin.w_names+graphicMargin.btwn_names+xScale_win(roundedAvg) + 8;
              }
-             else { return xScale_win(roundedAvg) - 8; };
+             else { return margin.left+graphicMargin.w_names+graphicMargin.btwn_names+xScale_win(roundedAvg) - 8; };
            })
            .attr("y", function(d,i) {
              return (graphicMargin.h_col+graphicMargin.h_btwn)*i + graphicMargin.h_col/2 +4;
@@ -328,14 +278,31 @@ d3.csv('data/jungler_pair_long.csv', rowConverter, function(data) {
                  return margin.top + (graphicMargin.h_col+graphicMargin.h_btwn)*(i)*5 - graphicMargin.h_btwn/2;
                });
 
-  updateClick();
+   updateClick();
+   updateSizing();
 
-  // INTERACTIVITY - when a new champion is selected
-  svg.selectAll(".nameGroup").on("click", function(d) {
-    var newChampion = d3.select(this)._groups[0][0].textContent;
-    updateChampion(newChampion);
+  // INTERACTIVITY
+  // Sorting - buttons
+  d3.select("#button-alpha").on("click", function() {
+    sort = "alpha";
+    updateButton(d3.select(this));
+    updateData();
     updateGraphic();
-  })
+  }); // end sorting changes
+  d3.select("#button-win").on("click", function() {
+    sort = "win";
+    updateButton(d3.select(this));
+    updateData();
+    updateGraphic();
+  }); // end sorting changes
+  // Slider
+  d3.select(".slider").on("input", function() {
+    // update slider display
+    sliderValue = parseInt(d3.select(this).node().value);
+    document.getElementById("slider-instructions").innerHTML = "Show pairs with at least " + d3.format(",")(sliderValue) + " games played:";
 
+    updateData();
+    updateGraphic();
+  }); // end on change slider function
 
 }); // end d3.csv function
