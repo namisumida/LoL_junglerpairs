@@ -124,12 +124,12 @@ var updateGraphic = function() {
 
   // Update name text
   document.getElementById("champion-name").innerHTML = currChampionName;
-  // Update icon image 
+  // Update icon image
   if (currChampionName.includes("'")) {
     var iconURLname = currChampionName.replace("'", "");
   }
   else { iconURLname = currChampionName; }
-  document.getElementById("champion-icon").src = "http://ddragon.leagueoflegends.com/cdn/6.24.1/img/champion/"+iconURLname+".png";
+  document.getElementById("champion-icon").src = "https://ddragon.leagueoflegends.com/cdn/6.24.1/img/champion/"+iconURLname+".png";
 
   // Update groups and exit
   pairGroup = svg.selectAll(".pairGroup")
