@@ -34,7 +34,7 @@ body,html {
 #title {
   position: relative;
   margin: 0 auto;
-  width: 690px;
+  width: 610px;
   margin-top: 30px;
 }
 h1 {
@@ -68,21 +68,33 @@ h5 {
   margin: 0 auto;
 }
 #options {
-  width: 100%;
+  position: relative;
+  margin: 0 auto;
+  min-width: 650px;
+  max-width: 800px;
 }
 #champion-name {
   font-family: radnika-bold;
   font-size: 25px;
+  margin: 0;
+  margin-right: 1em;
+  text-align: right;
   float: left;
-  max-width: 165px;
-  margin: 0.5em;
-  margin-right: 0;
+  width: 20%;
+}
+#champion-icon {
+  display: block;
+  margin: 0 auto;
+  margin-top: 0.5em;
+  float: left;
+  width: 10%;
+  height: 10%;
 }
 #slider-button-container {
-  float:right;
-  min-width: 600px;
+  float:left;
   height: 100px;
-  width:75%;
+  width: 60%;
+  margin-left: 1em;
 }
 #slider-container {
   position: relative;
@@ -92,13 +104,13 @@ h5 {
 }
 #slider-instructions {
   float: left;
-  width: 275px;
+  width: 180px;
 }
 .slidecontainer {
   float: right;
 }
 .slider {
-  width: 52%;
+  width: 60%;
   -webkit-appearance: none;
   position: absolute;
   margin: 8px;
@@ -134,6 +146,7 @@ button {
   font-size: 14px;
   border-radius: 3px;
   font-weight: 600;
+  height: 25px;
   -webkit-transition-duration: 0.4s; /* Safari */
   transition-duration: 0.4s;
   color: #a19da8;
@@ -154,7 +167,7 @@ button {
   width: 125px;
 }
 #graphic-svg {
-
+  margin-top: 10px;
 }
 .pairNameText {
   font-size: 12px;

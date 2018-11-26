@@ -261,7 +261,9 @@ d3.csv('data/jungler_pair_long.csv', rowConverter, function(data) {
              return (graphicMargin.h_col+graphicMargin.h_btwn)*i + graphicMargin.h_col/2 +4;
            })
            .text(function(d) {
-             return d3.format(".0%")(d.winrate);
+             if (+d.winrate.toFixed(2)!=currAvg) {
+               return d3.format(".0%")(d.winrate);
+             }
            })
            .style("text-anchor", function(d) {
              if (+(d.winrate).toFixed(2) > currAvg) {

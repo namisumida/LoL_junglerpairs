@@ -277,7 +277,9 @@ var updateGraphic = function() {
              return (graphicMargin.h_col+graphicMargin.h_btwn)*i + graphicMargin.h_col/2 +4;
            })
            .text(function(d) {
-             return d3.format(".0%")(d.winrate);
+             if (+d.winrate.toFixed(2)!=currAvg) {
+               return d3.format(".0%")(d.winrate);
+             }
            })
            .style("text-anchor", function(d) {
              if (+(d.winrate).toFixed(2) > currAvg) {
@@ -409,7 +411,9 @@ var updateGraphic = function() {
              return (graphicMargin.h_col+graphicMargin.h_btwn)*i + graphicMargin.h_col/2 +4;
            })
            .text(function(d) {
-             return d3.format(".0%")(d.winrate);
+             if (+d.winrate.toFixed(2)!=currAvg) {
+               return d3.format(".0%")(d.winrate);
+             }
            })
            .style("text-anchor", function(d) {
              if (+(d.winrate).toFixed(2) > currAvg) {
