@@ -55,7 +55,7 @@ h5 {
   margin: 8px;
   margin-top: 4px;
   margin-bottom: 4px;
-  color: #a19da8;
+  color: rgb(79,39,79);
   font-family: radnika-regular;
 }
 #title-line {
@@ -140,7 +140,6 @@ button {
   font-family: stratum-medium;
   cursor: pointer;
   margin-left: 0.5em;
-  margin-right: 0.5em;
 }
 #button-win {
   background-color: rgb(79,39,79);
@@ -148,7 +147,7 @@ button {
   width: 80px;
 }
 #button-play {
-  width: 90px;
+  width: 125px;
 }
 #button-alpha {
   width: 125px;
