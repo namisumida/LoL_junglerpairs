@@ -74,6 +74,7 @@ var updateClick = function() {
       .style("font-family", "radnika-bold");
   }); // end on click
 
+  // When a name is selected
   nameGroup.on("click", function(d) {
     var newChampion = d3.select(this)._groups[0][0].textContent;
     updateChampion(newChampion);

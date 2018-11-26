@@ -74,10 +74,7 @@ d3.csv('data/jungler_pair_long.csv', rowConverter, function(data) {
   // Create base elements
   svg.append("line")
       .attr("class", "midline")
-      .attr("x1", graphicMargin.w_names+graphicMargin.btwn_names+xScale_win(currAvg))
-      .attr("x2", graphicMargin.w_names+graphicMargin.btwn_names+xScale_win(currAvg))
       .attr("y1", margin.top)
-      .attr("y2", margin.top + (graphicMargin.h_col + graphicMargin.h_btwn)*(nPairs-1) + graphicMargin.h_col/2)
       .style("stroke", gray);
   svg.append("text")
      .text("Paired champion")
@@ -97,21 +94,19 @@ d3.csv('data/jungler_pair_long.csv', rowConverter, function(data) {
      .call(wrap, 80);
   svg.append("text")
      .text("Individual win rate")
-     .attr("x", graphicMargin.w_names+graphicMargin.btwn_names+xScale_win(currAvg))
      .attr("y", margin.top-25)
      .attr("class", "dataLabel")
      .attr("id", "avgDataLabel")
      .call(wrap, 60);
   svg.append("text")
      .text("Paired win rate")
-     .attr("x", graphicMargin.w_names+graphicMargin.btwn_names+xScale_win(+champ_subset[0].winrate.toFixed(2)))
      .attr("y", margin.top-25)
      .attr("class", "dataLabel")
      .attr("id", "pairDataLabel")
      .call(wrap, 50);
   // Pairs
   pairGroup = svg.selectAll("pairGroup")
-                  .data(champ_subset)
+                  .data(dataset)
                   .enter()
                   .append("g")
                   .attr("class", "pairGroup")
@@ -176,8 +171,7 @@ d3.csv('data/jungler_pair_long.csv', rowConverter, function(data) {
    sort = "win";
    updateChampion("Nunu");
    updateData();
-   updateClick();
-   updateSizing();
+   updateGraphic();
 
   // INTERACTIVITY
   // Sorting - buttons
