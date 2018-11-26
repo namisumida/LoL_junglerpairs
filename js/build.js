@@ -71,11 +71,6 @@ d3.csv('data/jungler_pair_long.csv', rowConverter, function(data) {
    // Data
    dataset = data;
 
-   // Initial setting
-   sort = "win";
-   updateChampion("Nunu");
-   updateData();
-
   // Create base elements
   svg.append("line")
       .attr("class", "midline")
@@ -129,167 +124,58 @@ d3.csv('data/jungler_pair_long.csv', rowConverter, function(data) {
            .attr("class", "background")
            .attr("id", "dotBackground")
            .attr("x", graphicMargin.w_names)
-           .attr("y", function(d,i) {
-            return (graphicMargin.h_col+graphicMargin.h_btwn)*i;
-           })
            .attr("width", w_dotLine+graphicMargin.btwn_names+margin.right)
            .attr("height", graphicMargin.h_col);
   dotGroup.append("rect")
            .attr("class", "pairBar")
-           .attr("width", function(d) {
-             return xScale_play(d.n_games);
-           })
            .attr("height", graphicMargin.h_col)
            .attr("x", graphicMargin.w_names + graphicMargin.btwn_names)
-           .attr("y", function(d,i) {
-             return (graphicMargin.h_col+graphicMargin.h_btwn)*i;
-           })
            .style("fill", light_gray)
            .style("opacity", 0.3);
   nameGroup.append("rect")
            .attr("class", "background")
            .attr("id", "nameBackground")
            .attr("x", 0)
-           .attr("y", function(d,i) {
-            return (graphicMargin.h_col+graphicMargin.h_btwn)*i;
-           })
            .attr("width", graphicMargin.w_names)
            .attr("height", graphicMargin.h_col);
   nameGroup.append("text")
            .attr("class", "pairNameText")
-           .text(function(d) {
-             return d.champ2;
-           })
-           .attr("x", graphicMargin.w_names)
-           .attr("y", function(d,i) {
-             return (graphicMargin.h_col+graphicMargin.h_btwn)*i + graphicMargin.h_col/2 +3;
-           });
+           .attr("x", graphicMargin.w_names);
   dotGroup.append("rect")
             .attr("class", "dotDistance")
-            .attr("x", function(d) {
-              var winRate = +(d.winrate).toFixed(2)
-              if (winRate > currAvg) {
-                return graphicMargin.w_names+graphicMargin.btwn_names+xScale_win(currAvg);
-              }
-              else {
-                return graphicMargin.w_names+graphicMargin.btwn_names+xScale_win(+(winRate).toFixed(2));
-              }
-            })
-            .attr("y", function(d,i) {
-              return (graphicMargin.h_col+graphicMargin.h_btwn)*i + graphicMargin.h_col/2-1;
-            })
             .attr("height", 2)
-            .attr("width", function(d) {
-              return Math.abs(xScale_win(+(d.winrate).toFixed(2))-xScale_win(currAvg));
-            });
   dotGroup.append("circle") // average dot
            .attr("class", "avgDot")
-           .attr("cx", function(d) {
-             return graphicMargin.w_names+graphicMargin.btwn_names+xScale_win(currAvg);
-           })
-           .attr("cy", function(d,i) {
-             return (graphicMargin.h_col+graphicMargin.h_btwn)*i + graphicMargin.h_col/2;
-           })
            .attr("r", 4)
            .style("fill", highlightColor);
   dotGroup.append("circle") // pair dot
            .attr("class", "pairDot")
-           .attr("cx", function(d) {
-             return graphicMargin.w_names+graphicMargin.btwn_names+xScale_win(+(d.winrate).toFixed(2));
-           })
-           .attr("cy", function(d,i) {
-             return (graphicMargin.h_col+graphicMargin.h_btwn)*i + graphicMargin.h_col/2;
-           })
-           .attr("r", 4)
-           .style("fill", function(d) {
-             var roundedWin = +(d.winrate).toFixed(2);
-             if (roundedWin > currAvg) {
-               return green;
-             }
-             else if (roundedWin < currAvg) {
-               return red;
-             }
-             else {
-               return dark_gray;
-             }
-           });
+           .attr("r", 4);
   dotGroup.append("text")
            .attr("class", "countLabel")
            .attr("id", "gamesCountLabel")
            .attr("x", graphicMargin.w_names + graphicMargin.btwn_names + 5)
-           .attr("y", function(d,i) {
-             return (graphicMargin.h_col+graphicMargin.h_btwn)*i + graphicMargin.h_col/2 +4;
-           })
-           .text(function(d) {
-             return d3.format(",")(d.n_games);
-           })
            .style("text-anchor", "start")
            .style("fill", "none");
   dotGroup.append("text")
            .attr("class", "countLabel")
            .attr("id", "avgCountLabel")
-           .attr("x", function(d) {
-             if (+(d.winrate).toFixed(2) > currAvg) {
-               return graphicMargin.w_names+graphicMargin.btwn_names+xScale_win(currAvg) - 8;
-             }
-             else { return graphicMargin.w_names+graphicMargin.btwn_names+xScale_win(currAvg) + 8; };
-           })
-           .attr("y", function(d,i) {
-             return (graphicMargin.h_col+graphicMargin.h_btwn)*i + graphicMargin.h_col/2 +4;
-           })
-           .text(function(d) {
-             return d3.format(".0%")(currAvg);
-           })
-           .style("text-anchor", function(d) {
-             if (+(d.winrate).toFixed(2) > currAvg) {
-               return "end";
-             }
-             else { return "start"; };
-           })
            .style("fill", "none");
   dotGroup.append("text")
            .attr("class", "countLabel")
            .attr("id", "pairCountLabel")
-           .attr("x", function(d) {
-             var roundedWin = +(d.winrate).toFixed(2);
-             if (roundedWin > currAvg) {
-               return graphicMargin.w_names+graphicMargin.btwn_names+xScale_win(roundedWin) + 8;
-             }
-             else { return graphicMargin.w_names+graphicMargin.btwn_names+xScale_win(roundedWin) - 8; };
-           })
-           .attr("y", function(d,i) {
-             return (graphicMargin.h_col+graphicMargin.h_btwn)*i + graphicMargin.h_col/2 +4;
-           })
-           .text(function(d) {
-             if (+d.winrate.toFixed(2)!=currAvg) {
-               return d3.format(".0%")(d.winrate);
-             }
-           })
-           .style("text-anchor", function(d) {
-             if (+(d.winrate).toFixed(2) > currAvg) {
-               return "start";
-             }
-             else { return "end"; };
-           })
            .style("fill", "none");
    // Create line breaks
    var breakline_g = svg.append("g").attr("id", "breakline_g");
-   breakline_g.selectAll("breakline")
-               .data(champ_subset.filter(function(d,i) {
-                 return (i+1)%5==0;
-               })) // this can be any mode, but should be based on the metric
-               .enter()
-               .append("line")
+   breakline_g.append("line")
                .attr("class", "breakline")
                .attr("x1", 0)
-               .attr("x2", w_svg)
-               .attr("y1", function(d,i) {
-                 return margin.top + (graphicMargin.h_col+graphicMargin.h_btwn)*(i)*5 - graphicMargin.h_btwn/2;
-               })
-               .attr("y2", function(d,i) {
-                 return margin.top + (graphicMargin.h_col+graphicMargin.h_btwn)*(i)*5 - graphicMargin.h_btwn/2;
-               });
+               .attr("x2", w_svg);
 
+   // Initial setting
+   sort = "win";
+   updateChampion("Nunu");
+   updateData();
    updateClick();
    updateSizing();
 

@@ -81,6 +81,7 @@ h5 {
   text-align: right;
   float: left;
   width: 20%;
+  color: rgb(79,39,79);
 }
 #champion-icon {
   display: block;
