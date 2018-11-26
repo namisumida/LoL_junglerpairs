@@ -101,9 +101,9 @@ d3.csv('data/jungler_pair_long.csv', rowConverter, function(data) {
      .style("text-anchor", "start")
      .call(wrap, 80);
   svg.append("text")
-     .text("Individual win rate: " + d3.format(".0%")(currAvg))
+     .text("Individual win rate")
      .attr("x", graphicMargin.w_names+graphicMargin.btwn_names+xScale_win(currAvg))
-     .attr("y", margin.top-40)
+     .attr("y", margin.top-25)
      .attr("class", "dataLabel")
      .attr("id", "avgDataLabel")
      .call(wrap, 60);
@@ -227,13 +227,35 @@ d3.csv('data/jungler_pair_long.csv', rowConverter, function(data) {
            .style("fill", "none");
   dotGroup.append("text")
            .attr("class", "countLabel")
+           .attr("id", "avgCountLabel")
+           .attr("x", function(d) {
+             if (+(d.winrate).toFixed(2) > currAvg) {
+               return graphicMargin.w_names+graphicMargin.btwn_names+xScale_win(currAvg) - 8;
+             }
+             else { return graphicMargin.w_names+graphicMargin.btwn_names+xScale_win(currAvg) + 8; };
+           })
+           .attr("y", function(d,i) {
+             return (graphicMargin.h_col+graphicMargin.h_btwn)*i + graphicMargin.h_col/2 +4;
+           })
+           .text(function(d) {
+             return d3.format(".0%")(currAvg);
+           })
+           .style("text-anchor", function(d) {
+             if (+(d.winrate).toFixed(2) > currAvg) {
+               return "end";
+             }
+             else { return "start"; };
+           })
+           .style("fill", "none");
+  dotGroup.append("text")
+           .attr("class", "countLabel")
            .attr("id", "pairCountLabel")
            .attr("x", function(d) {
-             var roundedAvg = +(d.winrate).toFixed(2);
-             if (roundedAvg > currAvg) {
-               return graphicMargin.w_names+graphicMargin.btwn_names+xScale_win(roundedAvg) + 8;
+             var roundedWin = +(d.winrate).toFixed(2);
+             if (roundedWin > currAvg) {
+               return graphicMargin.w_names+graphicMargin.btwn_names+xScale_win(roundedWin) + 8;
              }
-             else { return graphicMargin.w_names+graphicMargin.btwn_names+xScale_win(roundedAvg) - 8; };
+             else { return graphicMargin.w_names+graphicMargin.btwn_names+xScale_win(roundedWin) - 8; };
            })
            .attr("y", function(d,i) {
              return (graphicMargin.h_col+graphicMargin.h_btwn)*i + graphicMargin.h_col/2 +4;

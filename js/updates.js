@@ -3,7 +3,7 @@ var updatexScale_play = function(subset) {
   var maxDistance = d3.min([xScale_win(currAvg), (w_dotLine-xScale_win(currAvg))]);
   xScale_play = d3.scaleLinear()
                    .domain([d3.min(subset, function(d) { return d.n_games; }), d3.max(subset, function(d) { return d.n_games; })])
-                   .range([10, maxDistance]);
+                   .range([30, maxDistance]);
 };
 
 // Update slider - when a new champion is selected
@@ -56,17 +56,17 @@ var updateClick = function() {
     svg.selectAll(".countLabel")
        .style("fill", "none");
     svg.selectAll(".pairBar")
-       .style("fill", light_gray);
+       .style("fill", light_gray)
+       .style("opacity", 0.3);
     svg.selectAll(".dotDistance")
        .style("opacity", 0.5);
     svg.selectAll(".pairNameText")
        .style("font-family", "radnika-regular");
-    currElement.select("#pairCountLabel")
+    currElement.selectAll(".countLabel")
                .style("fill", "black");
-    currElement.select("#gamesCountLabel")
-               .style("fill", highlightColor);
     currElement.select(".pairBar")
-               .style("fill", dotColor);
+               .style("fill", dotColor)
+               .style("opacity", 0.5);
     currElement.select(".dotDistance")
                .style("opacity", 1);
     d3.selectAll(".pairNameText")
@@ -242,6 +242,28 @@ var updateGraphic = function() {
            .style("text-anchor", "start")
            .style("fill", "none");
   dotGroupEnter.append("text")
+               .attr("class", "countLabel")
+               .attr("id", "avgCountLabel")
+               .attr("x", function(d) {
+                 if (+(d.winrate).toFixed(2) > currAvg) {
+                   return graphicMargin.w_names+graphicMargin.btwn_names+xScale_win(currAvg) - 8;
+                 }
+                 else { return graphicMargin.w_names+graphicMargin.btwn_names+xScale_win(currAvg) + 8; };
+               })
+               .attr("y", function(d,i) {
+                 return (graphicMargin.h_col+graphicMargin.h_btwn)*i + graphicMargin.h_col/2 +4;
+               })
+               .text(function(d) {
+                 return d3.format(".0%")(currAvg);
+               })
+               .style("text-anchor", function(d) {
+                 if (+(d.winrate).toFixed(2) > currAvg) {
+                   return "end";
+                 }
+                 else { return "start"; };
+               })
+               .style("fill", "none");
+  dotGroupEnter.append("text")
            .attr("class", "countLabel")
            .attr("id", "pairCountLabel")
            .attr("x", function(d) {
@@ -288,7 +310,8 @@ var updateGraphic = function() {
            .attr("y", function(d,i) {
              return (graphicMargin.h_col+graphicMargin.h_btwn)*i;
            })
-           .style("fill", light_gray);
+           .style("fill", light_gray)
+           .style("opacity", 0.3);
   nameGroup.select("#nameBackground")
            .attr("y", function(d,i) {
             return (graphicMargin.h_col+graphicMargin.h_btwn)*i;
@@ -345,7 +368,7 @@ var updateGraphic = function() {
              }
            });
   dotGroup.select("#gamesCountLabel")
-           .attr("x", graphicMargin.w_names + graphicMargin.btwn_names)
+           .attr("x", graphicMargin.w_names + graphicMargin.btwn_names + 5)
            .attr("y", function(d,i) {
              return (graphicMargin.h_col+graphicMargin.h_btwn)*i + graphicMargin.h_col/2 +4;
            })
@@ -354,6 +377,26 @@ var updateGraphic = function() {
            })
            .style("text-anchor", "start")
            .style("fill", "none");
+  dotGroup.select("#avgCountLabel")
+          .attr("x", function(d) {
+            if (+(d.winrate).toFixed(2) > currAvg) {
+              return graphicMargin.w_names+graphicMargin.btwn_names+xScale_win(currAvg) - 8;
+            }
+            else { return graphicMargin.w_names+graphicMargin.btwn_names+xScale_win(currAvg) + 8; };
+          })
+          .attr("y", function(d,i) {
+            return (graphicMargin.h_col+graphicMargin.h_btwn)*i + graphicMargin.h_col/2 +4;
+          })
+          .text(function(d) {
+            return d3.format(".0%")(currAvg);
+          })
+          .style("text-anchor", function(d) {
+            if (+(d.winrate).toFixed(2) > currAvg) {
+              return "end";
+            }
+            else { return "start"; };
+          })
+          .style("fill", "none");
   dotGroup.select("#pairCountLabel")
            .attr("x", function(d) {
              var roundedAvg = +(d.winrate).toFixed(2);
@@ -380,7 +423,7 @@ var updateGraphic = function() {
    var firstRow = champ_subset[0];
    var firstRowDist = xScale_win(+firstRow.winrate.toFixed(2))-xScale_win(currAvg);
    svg.select("#avgDataLabel")
-       .text("Individual win rate: " + d3.format(".0%")(currAvg))
+       .text("Individual win rate")
        .attr("x", function() {
          if (Math.abs(firstRowDist) < 30) {
            if (firstRowDist < 0) { // if average is greater than winrate
@@ -390,7 +433,7 @@ var updateGraphic = function() {
          }
          else { return graphicMargin.w_names+graphicMargin.btwn_names+xScale_win(currAvg); }
        })
-       .attr("y", margin.top-40)
+       .attr("y", margin.top-25)
        .call(wrap, 60)
        .style("text-anchor", function() {
          if (Math.abs(firstRowDist) < 60) {

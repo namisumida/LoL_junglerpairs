@@ -91,13 +91,14 @@ h5 {
   height: 35px;
 }
 #slider-instructions {
-  float: left
+  float: left;
+  width: 275px;
 }
 .slidecontainer {
   float: right;
 }
 .slider {
-  width: 57%;
+  width: 52%;
   -webkit-appearance: none;
   position: absolute;
   margin: 8px;
