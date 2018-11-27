@@ -11,10 +11,6 @@
   src: url("fonts/Radnika-Regular.otf");
 }
 @font-face {
-  font-family: radnika-condensed;
-  src: url("fonts/Radnika-Condensed.otf");
-}
-@font-face {
   font-family: radnika-medium;
   src: url("fonts/Radnika-Medium.otf");
 }

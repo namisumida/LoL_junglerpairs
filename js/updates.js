@@ -21,8 +21,8 @@ var updateSlider = function() {
 var updateChampion = function(champ) {
   currChampionName = champ; // set champ name
   // Get average
-  var avgDataRow = avg_data.filter(function(d) { return d.queueid==1200 & d.champion == champ; })[0];
-  currAvg = +(avgDataRow.nwins/avgDataRow.ngames).toFixed(2);
+  var avgDataRow = avg_data.filter(function(d) { return d.champ == champ; })[0];
+  currAvg = +(avgDataRow.winrate).toFixed(2);
   updateSlider();
   // update champ subset for now
   champ_subset = dataset.filter(function(d) { return d.champ1 == currChampionName; });
@@ -130,7 +130,7 @@ var updateGraphic = function() {
     var iconURLname = currChampionName.replace("'", "");
   }
   else { iconURLname = currChampionName; }
-  document.getElementById("champion-icon").src = "https://ddragon.leagueoflegends.com/cdn/6.24.1/img/champion/"+iconURLname+".png";
+  document.getElementById("champion-icon").src = "";
 
   // Update groups and exit
   pairGroup = svg.selectAll(".pairGroup")
