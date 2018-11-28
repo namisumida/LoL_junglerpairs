@@ -48,6 +48,7 @@ the text field element and an array of possible autocompleted values:*/
             updateChampion("+ "+inp.value);
             updateData();
             updateGraphic();
+            document.getElementById("searchbar").value="";
         });
         a.appendChild(b);
       }
@@ -84,6 +85,7 @@ the text field element and an array of possible autocompleted values:*/
   /*execute a function when someone clicks in the document:*/
   document.addEventListener("click", function (e) {
     closeAllLists(e.target);
+    document.getElementById("searchbar").value="";
   });
 }; // end autocomplete
 
