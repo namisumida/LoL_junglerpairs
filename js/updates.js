@@ -6,6 +6,106 @@ var updatexScale_play = function(subset) {
                    .range([30, maxDistance]);
 };
 
+// Search bar functions
+function autocomplete(inp, arr) {
+/*the autocomplete function takes two arguments,
+the text field element and an array of possible autocompleted values:*/
+  var currentFocus;
+/*execute a function when someone writes in the text field:*/
+  inp.addEventListener("input", function(e) {
+    var a, b, i, val = this.value;
+    /*close any already open lists of autocompleted values*/
+    closeAllLists();
+    if (!val) { return false;}
+    currentFocus = -1;
+    /*create a DIV element that will contain the items (values):*/
+    a = document.createElement("DIV");
+    a.setAttribute("id", this.id + "autocomplete-list");
+    a.setAttribute("class", "autocomplete-items");
+    /*append the DIV element as a child of the autocomplete container:*/
+    this.parentNode.appendChild(a);
+    /*for each item in the array...*/
+    for (i = 0; i < arr.length; i++) {
+      /*check if the item starts with the same letters as the text field value:*/
+      if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+        /*create a DIV element for each matching element:*/
+        b = document.createElement("DIV");
+        /*make the matching letters bold:*/
+        b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+        b.innerHTML += arr[i].substr(val.length);
+        /*insert a input field that will hold the current array item's value:*/
+        b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+        /*execute a function when someone clicks on the item value (DIV element):*/
+            b.addEventListener("click", function(e) {
+            /*insert the value for the autocomplete text field:*/
+            inp.value = this.getElementsByTagName("input")[0].value;
+            /*close the list of autocompleted values,
+            (or any other open lists of autocompleted values:*/
+            closeAllLists();
+        });
+        a.appendChild(b);
+      }
+    }
+});
+/*execute a function presses a key on the keyboard:*/
+inp.addEventListener("keydown", function(e) {
+    var x = document.getElementById(this.id + "autocomplete-list");
+    if (x) x = x.getElementsByTagName("div");
+    if (e.keyCode == 40) {
+      /*If the arrow DOWN key is pressed,
+      increase the currentFocus variable:*/
+      currentFocus++;
+      /*and and make the current item more visible:*/
+      addActive(x);
+    } else if (e.keyCode == 38) { //up
+      /*If the arrow UP key is pressed,
+      decrease the currentFocus variable:*/
+      currentFocus--;
+      /*and and make the current item more visible:*/
+      addActive(x);
+    } else if (e.keyCode == 13) {
+      /*If the ENTER key is pressed, prevent the form from being submitted,*/
+      e.preventDefault();
+      if (currentFocus > -1) {
+        /*and simulate a click on the "active" item:*/
+        if (x) x[currentFocus].click();
+      }
+    }
+}); // end add event listener
+function addActive(x) {
+  /*a function to classify an item as "active":*/
+  if (!x) return false;
+  /*start by removing the "active" class on all items:*/
+  removeActive(x);
+  if (currentFocus >= x.length) currentFocus = 0;
+  if (currentFocus < 0) currentFocus = (x.length - 1);
+  /*add class "autocomplete-active":*/
+  x[currentFocus].classList.add("autocomplete-active");
+}; // end addActive
+
+function removeActive(x) {
+  /*a function to remove the "active" class from all autocomplete items:*/
+  for (var i = 0; i < x.length; i++) {
+    x[i].classList.remove("autocomplete-active");
+  }
+}; // end removeActive
+
+function closeAllLists(elmnt) {
+  /*close all autocomplete lists in the document,
+  except the one passed as an argument:*/
+  var x = document.getElementsByClassName("autocomplete-items");
+  for (var i = 0; i < x.length; i++) {
+    if (elmnt != x[i] && elmnt != inp) {
+      x[i].parentNode.removeChild(x[i]);
+    }
+  }
+}; // end closeAllLists
+/*execute a function when someone clicks in the document:*/
+document.addEventListener("click", function (e) {
+  closeAllLists(e.target);
+});
+}; // end autocomplete
+
 // Update slider - when a new champion is selected
 var updateSlider = function() {
   var slider = d3.select(".slider");
@@ -19,9 +119,9 @@ var updateSlider = function() {
 
 // Function to update champion - this only includes stuff when the champion is fixed
 var updateChampion = function(champ) {
-  currChampionName = champ; // set champ name
+  currChampionName = champ.replace("+ ", ""); // set champ name
   // Get average
-  var avgDataRow = avg_data.filter(function(d) { return d.champ == champ; })[0];
+  var avgDataRow = avg_data.filter(function(d) { return d.champ == currChampionName; })[0];
   currAvg = +(avgDataRow.winrate).toFixed(2);
   updateSlider();
   // update champ subset for now
@@ -48,20 +148,10 @@ var updateData = function() {
 
 // On click
 var updateClick = function() {
-  dotGroup.on("click", function(d) {
+  dotGroup.on("mouseover", function(d) {
     var currElement = d3.select(this);
     var currPair = d.champ2;
 
-    // Remove on click attributes for all (mainly previously clicked element)
-    svg.selectAll(".countLabel")
-       .style("fill", "none");
-    svg.selectAll(".pairBar")
-       .style("fill", light_gray)
-       .style("opacity", 0.3);
-    svg.selectAll(".dotDistance")
-       .style("opacity", 0.5);
-    svg.selectAll(".pairNameText")
-       .style("font-family", "radnika-regular");
     currElement.selectAll(".countLabel")
                .style("fill", "black");
     currElement.select(".pairBar")
@@ -72,7 +162,20 @@ var updateClick = function() {
     d3.selectAll(".pairNameText")
       .filter(function(d) { return d.champ2 == currPair; })
       .style("font-family", "radnika-bold");
-  }); // end on click
+  }); // end on mouseout
+
+  dotGroup.on("mouseout", function(d) {
+    // Remove on click attributes for all (mainly previously clicked element)
+    svg.selectAll(".countLabel")
+       .style("fill", "none");
+    svg.selectAll(".pairBar")
+       .style("fill", light_gray)
+       .style("opacity", 0.3);
+    svg.selectAll(".dotDistance")
+       .style("opacity", 0.5);
+    svg.selectAll(".pairNameText")
+       .style("font-family", "radnika-regular");
+  }); // end on mouseout
 
   // When a name is selected
   nameGroup.on("click", function(d) {
@@ -130,7 +233,7 @@ var updateGraphic = function() {
     var iconURLname = currChampionName.replace("'", "");
   }
   else { iconURLname = currChampionName; }
-  document.getElementById("champion-icon").src = "";
+  //document.getElementById("champion-icon").src = "";
 
   // Update groups and exit
   pairGroup = svg.selectAll(".pairGroup")
@@ -181,7 +284,7 @@ var updateGraphic = function() {
   nameGroupEnter.append("text")
            .attr("class", "pairNameText")
            .text(function(d) {
-             return d.champ2;
+             return "+ " + d.champ2;
            })
            .attr("x", graphicMargin.w_names)
            .attr("y", function(d,i) {
@@ -327,7 +430,7 @@ var updateGraphic = function() {
            })
   nameGroup.select(".pairNameText")
            .text(function(d) {
-             return d.champ2;
+             return "+ " + d.champ2;
            })
            .attr("y", function(d,i) {
              return (graphicMargin.h_col+graphicMargin.h_btwn)*i + graphicMargin.h_col/2 +3;

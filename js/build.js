@@ -1,11 +1,10 @@
 var svg = d3.select("#graphic-svg");
 var w_svg = document.getElementById("graphic-svg").getBoundingClientRect().width;
 var margin = { left: 5, right: 40, top: 60, bottom: 0 }
-var graphicMargin = { w:(w_svg-margin.left-margin.right), w_names:75, btwn_names:15, h_col:13, h_btwn:5 };
+var graphicMargin = { w:(w_svg-margin.left-margin.right), w_names:90, btwn_names:15, h_col:13, h_btwn:5 };
 var w_dotLine = graphicMargin.w-graphicMargin.w_names-graphicMargin.btwn_names;
 
 // Datasets
-var dataset, champ_subset, currChampionName, currAvg, nPairs, sort, pairGroup, dotGroup, nameGroup;
 var rowConverter = function(d) {
   return {
     champ1: d.champ1,
@@ -20,6 +19,7 @@ var xScale_win = d3.scaleLinear()
                    .domain([0,1])
                    .range([80, w_dotLine]);
 
+// Slider
 var sliderValue = parseInt(d3.select(".slider").node().value);
 
 // Text wrap function
@@ -198,9 +198,15 @@ d3.csv('data/jungler_pair_long.csv', rowConverter, function(data) {
     // update slider display
     sliderValue = parseInt(d3.select(this).node().value);
     document.getElementById("slider-instructions").innerHTML = "Show pairs with at least " + d3.format(",")(sliderValue) + " games played:";
-
     updateData();
     updateGraphic();
   }); // end on change slider function
+
+  // champion names for search bar
+  var championNameList = [];
+  for (var i=0; i<(avg_data.length); i++) { // get a list of all champions
+    championNameList.push(avg_data[i].champ);
+  }; // end for loop
+  autocomplete(document.getElementById("searchbar"), championNameList);
 
 }); // end d3.csv function

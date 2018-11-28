@@ -96,7 +96,6 @@ h5 {
 #slider-container {
   position: relative;
   margin: .5em;
-  margin-right: 1em;
   height: 35px;
 }
 #slider-instructions {
@@ -163,8 +162,49 @@ button {
 #button-alpha {
   width: 125px;
 }
+#searchbar-container {
+  float: left;
+  height: 30px;
+  width: 60%;
+  margin-left: 1.5em;
+}
+#searchbar-instructions {
+  float: left;
+}
+#searchbar {
+  margin-left: 10px;
+  width: 150px;
+  margin-top: 0.25em;
+  font-family: radnika-regular;
+}
+.autocomplete-items {
+  position: absolute;
+  border: 1px solid rgb(79,39,79);
+  border-bottom: none;
+  border-top: none;
+  z-index: 99;
+  left: 450px;
+  width: 150px;
+}
+.autocomplete-items div {
+  padding: 10px;
+  cursor: pointer;
+  background-color: #fff;
+  border-bottom: 1px solid #d4d4d4;
+  font-family: radnika-regular;
+  font-size: 14px;
+}
+.autocomplete-items div:hover {
+  /*when hovering an item:*/
+  background-color: rgb(79,39,79);
+  color: white;
+}
+.autocomplete-active {
+  background-color: rgb(79,39,79);
+}
+
 #graphic-svg {
-  margin-top: 10px;
+
 }
 .pairNameText {
   font-size: 12px;
