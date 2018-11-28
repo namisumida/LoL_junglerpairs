@@ -1,4 +1,5 @@
 // Scales
+var xScale_play;
 var updatexScale_play = function(subset) {
   var maxDistance = d3.min([xScale_win(currAvg), (w_dotLine-xScale_win(currAvg))]);
   xScale_play = d3.scaleLinear()
@@ -6,6 +7,7 @@ var updatexScale_play = function(subset) {
                    .range([30, maxDistance]);
 };
 
+var searchedChampion;
 // Search bar functions
 function autocomplete(inp, arr) {
 /*the autocomplete function takes two arguments,
@@ -40,70 +42,49 @@ the text field element and an array of possible autocompleted values:*/
             /*insert the value for the autocomplete text field:*/
             inp.value = this.getElementsByTagName("input")[0].value;
             /*close the list of autocompleted values,
-            (or any other open lists of autocompleted values:*/
+            (or any other open lists of autocompleted values:
+            Run update on graphic */
             closeAllLists();
+            updateChampion("+ "+inp.value);
+            updateData();
+            updateGraphic();
         });
         a.appendChild(b);
       }
     }
-});
-/*execute a function presses a key on the keyboard:*/
-inp.addEventListener("keydown", function(e) {
-    var x = document.getElementById(this.id + "autocomplete-list");
-    if (x) x = x.getElementsByTagName("div");
-    if (e.keyCode == 40) {
-      /*If the arrow DOWN key is pressed,
-      increase the currentFocus variable:*/
-      currentFocus++;
-      /*and and make the current item more visible:*/
-      addActive(x);
-    } else if (e.keyCode == 38) { //up
-      /*If the arrow UP key is pressed,
-      decrease the currentFocus variable:*/
-      currentFocus--;
-      /*and and make the current item more visible:*/
-      addActive(x);
-    } else if (e.keyCode == 13) {
-      /*If the ENTER key is pressed, prevent the form from being submitted,*/
-      e.preventDefault();
-      if (currentFocus > -1) {
-        /*and simulate a click on the "active" item:*/
-        if (x) x[currentFocus].click();
+  });
+  function addActive(x) {
+    /*a function to classify an item as "active":*/
+    if (!x) return false;
+    /*start by removing the "active" class on all items:*/
+    removeActive(x);
+    if (currentFocus >= x.length) currentFocus = 0;
+    if (currentFocus < 0) currentFocus = (x.length - 1);
+    /*add class "autocomplete-active":*/
+    x[currentFocus].classList.add("autocomplete-active");
+  }; // end addActive
+
+  function removeActive(x) {
+    /*a function to remove the "active" class from all autocomplete items:*/
+    for (var i = 0; i < x.length; i++) {
+      x[i].classList.remove("autocomplete-active");
+    }
+  }; // end removeActive
+
+  function closeAllLists(elmnt) {
+    /*close all autocomplete lists in the document,
+    except the one passed as an argument:*/
+    var x = document.getElementsByClassName("autocomplete-items");
+    for (var i = 0; i < x.length; i++) {
+      if (elmnt != x[i] && elmnt != inp) {
+        x[i].parentNode.removeChild(x[i]);
       }
     }
-}); // end add event listener
-function addActive(x) {
-  /*a function to classify an item as "active":*/
-  if (!x) return false;
-  /*start by removing the "active" class on all items:*/
-  removeActive(x);
-  if (currentFocus >= x.length) currentFocus = 0;
-  if (currentFocus < 0) currentFocus = (x.length - 1);
-  /*add class "autocomplete-active":*/
-  x[currentFocus].classList.add("autocomplete-active");
-}; // end addActive
-
-function removeActive(x) {
-  /*a function to remove the "active" class from all autocomplete items:*/
-  for (var i = 0; i < x.length; i++) {
-    x[i].classList.remove("autocomplete-active");
-  }
-}; // end removeActive
-
-function closeAllLists(elmnt) {
-  /*close all autocomplete lists in the document,
-  except the one passed as an argument:*/
-  var x = document.getElementsByClassName("autocomplete-items");
-  for (var i = 0; i < x.length; i++) {
-    if (elmnt != x[i] && elmnt != inp) {
-      x[i].parentNode.removeChild(x[i]);
-    }
-  }
-}; // end closeAllLists
-/*execute a function when someone clicks in the document:*/
-document.addEventListener("click", function (e) {
-  closeAllLists(e.target);
-});
+  }; // end closeAllLists
+  /*execute a function when someone clicks in the document:*/
+  document.addEventListener("click", function (e) {
+    closeAllLists(e.target);
+  });
 }; // end autocomplete
 
 // Update slider - when a new champion is selected
