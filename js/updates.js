@@ -98,6 +98,11 @@ var updateSlider = function() {
   // Update slider to new min and max
   document.getElementById("slider").min = d3.min(subset, function(d) { return d.n_games; });
   document.getElementById("slider").max = subset_max;
+  // Update slider text
+  var newMin = document.getElementById("slider").min;
+  if (previousValue < newMin) { // if previous is smaller than new/current min, change text
+    document.getElementById("slider-instructions").innerHTML = "Show pairs with at least " +newMin+ " games played:"
+  };
 };
 
 // Function to update champion - this only includes stuff when the champion is fixed
