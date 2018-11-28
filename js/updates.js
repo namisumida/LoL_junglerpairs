@@ -54,6 +54,42 @@ the text field element and an array of possible autocompleted values:*/
       }
     }
   });
+  /*execute a function presses a key on the keyboard:*/
+  inp.addEventListener("keydown", function(e) {
+      var x = document.getElementById(this.id + "autocomplete-list");
+      if (x) x = x.getElementsByTagName("div");
+      if (e.keyCode == 40) {
+        /*If the arrow DOWN key is pressed,
+        save old variable
+        increase the currentFocus variable:*/
+        old = currentFocus;
+        currentFocus++;
+        /*and and make the current item more visible:*/
+        addActive(x);
+        if (old > -1) {
+          x[old].style.color = d3.rgb(79,39,79);
+          x[old].style.backgroundColor = d3.color("#fff");
+        }
+      } else if (e.keyCode == 38) { //up
+        /*If the arrow UP key is pressed,
+        decrease the currentFocus variable:*/
+        old = currentFocus;
+        currentFocus--;
+        /*and and make the current item more visible:*/
+        addActive(x);
+        if (old > -1) {
+          x[old].style.color = d3.rgb(79,39,79);
+          x[old].style.backgroundColor = d3.color("#fff");
+        }
+      } else if (e.keyCode == 13) {
+        /*If the ENTER key is pressed, prevent the form from being submitted,*/
+        e.preventDefault();
+        if (currentFocus > -1) {
+          /*and simulate a click on the "active" item:*/
+          if (x) x[currentFocus].click();
+        }
+      }
+  }); // end add event listener
   function addActive(x) {
     /*a function to classify an item as "active":*/
     if (!x) return false;
@@ -63,6 +99,8 @@ the text field element and an array of possible autocompleted values:*/
     if (currentFocus < 0) currentFocus = (x.length - 1);
     /*add class "autocomplete-active":*/
     x[currentFocus].classList.add("autocomplete-active");
+    x[currentFocus].style.color = "white";
+    x[currentFocus].style.backgroundColor = d3.rgb(79,39,79);
   }; // end addActive
 
   function removeActive(x) {
