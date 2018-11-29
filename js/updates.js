@@ -6,7 +6,6 @@ var updatexScale_play = function(subset) {
                    .domain([d3.min(subset, function(d) { return d.n_games; }), d3.max(subset, function(d) { return d.n_games; })])
                    .range([30, maxDistance]);
 };
-
 var searchedChampion;
 // Search bar functions
 function autocomplete(inp, arr) {
@@ -26,6 +25,9 @@ the text field element and an array of possible autocompleted values:*/
     a.setAttribute("class", "autocomplete-items");
     /*append the DIV element as a child of the autocomplete container:*/
     this.parentNode.appendChild(a);
+    if (val.includes("'")) {
+      val = val.replace("'", "\'");
+    }
     /*for each item in the array...*/
     for (i = 0; i < arr.length; i++) {
       /*check if the item starts with the same letters as the text field value:*/
