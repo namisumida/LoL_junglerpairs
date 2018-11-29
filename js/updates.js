@@ -188,17 +188,17 @@ var updateClick = function() {
     d3.selectAll(".pairNameText")
       .filter(function(d) { return d.champ2 == currPair; })
       .style("font-family", "radnika-bold");
-  }); // end on mouseout
-
-  dotGroup.on("mouseout", function(d) {
+  })
+  .on("mouseout", function(d) {
     // Remove on click attributes for all (mainly previously clicked element)
-    svg.selectAll(".countLabel")
-       .style("fill", "none");
-    svg.selectAll(".pairBar")
-       .style("fill", light_gray)
-       .style("opacity", 0.3);
-    svg.selectAll(".dotDistance")
-       .style("opacity", 0.5);
+    var currElement = d3.select(this);
+    currElement.selectAll(".countLabel")
+               .style("fill", "none");
+    currElement.select(".pairBar")
+               .style("fill", light_gray)
+               .style("opacity", 0.3);
+    currElement.select(".dotDistance")
+               .style("opacity", 0.5);
     svg.selectAll(".pairNameText")
        .style("font-family", "radnika-regular");
   }); // end on mouseout
@@ -209,7 +209,38 @@ var updateClick = function() {
     updateChampion(newChampion);
     updateData();
     updateGraphic();
-  });
+  })
+  .on("mouseover", function(d) {
+    var currElement = d3.select(this);
+    currElement.select(".pairNameText").style("font-family", "radnika-bold");
+    var currPair = d.champ2;
+
+    var currDotGroup = svg.selectAll(".dotGroup")
+                          .filter(function(d) { return d.champ2 == currPair; });
+
+    currDotGroup.selectAll(".countLabel")
+                .style("fill", "black");
+    currDotGroup.select(".pairBar")
+                .style("fill", dotColor)
+                .style("opacity", 0.5);
+    currDotGroup.select(".dotDistance")
+                .style("opacity", 1);
+  })
+  .on("mouseout", function(d) {
+    var currElement = d3.select(this);
+    currElement.select(".pairNameText").style("font-family", "radnika-regular");
+    var currPair = d.champ2;
+
+    var currDotGroup = svg.selectAll(".dotGroup")
+                          .filter(function(d) { return d.champ2 == currPair; });
+    currDotGroup.selectAll(".countLabel")
+                .style("fill", "none");
+    currDotGroup.select(".pairBar")
+                .style("fill", light_gray)
+                .style("opacity", 0.3);
+    currDotGroup.select(".dotDistance")
+                .style("opacity", 0.5);
+  })
 };
 
 // Resizing
@@ -563,7 +594,7 @@ var updateGraphic = function() {
    var firstRow = champ_subset[0];
    var firstRowDist = xScale_win(+firstRow.winrate.toFixed(2))-xScale_win(currAvg);
    svg.select("#avgDataLabel")
-       .text("Individual win rate")
+       .text(currChampionName + "'s win rate")
        .attr("x", function() {
          if (Math.abs(firstRowDist) < 30) {
            if (firstRowDist < 0) { // if average is greater than winrate
@@ -574,7 +605,7 @@ var updateGraphic = function() {
          else { return graphicMargin.w_names+graphicMargin.btwn_names+xScale_win(currAvg); }
        })
        .attr("y", margin.top-25)
-       .call(wrap, 60)
+       .call(wrapChampion)
        .style("text-anchor", function() {
          if (Math.abs(firstRowDist) < 60) {
            if (firstRowDist < 0) { // if average is greater than winrate

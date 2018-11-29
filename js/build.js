@@ -56,6 +56,46 @@ function wrap(text, width) {
   });
 }; // end wrap function
 
+function wrapChampion(text) {
+  text.each(function () {
+    var text = d3.select(this),
+        words = text.text().split(/\s+/).reverse(),
+        word,
+        line = [],
+        lineNumber = 0,
+        lineHeight = 1.3, // ems
+        x = text.attr("x"),
+        y = text.attr("y"),
+        dy = 0, //parseFloat(text.attr("dy")),
+        tspan = text.text(null)
+                    .append("tspan")
+                    .attr("x", x)
+                    .attr("y", y)
+                    .attr("dy", dy + "em");
+    var champNameLength = tspan.text(currChampionName + "'s").node().getComputedTextLength();
+    if (champNameLength < 45) {
+      var width = 45;
+    }
+    else { var width = champNameLength; }
+    console.log(champNameLength);
+    console.log(width);
+    while (word = words.pop()) {
+        line.push(word);
+        tspan.text(line.join(" "));
+        if (tspan.node().getComputedTextLength() > width) {
+            line.pop();
+            tspan.text(line.join(" "));
+            line = [word];
+            tspan = text.append("tspan")
+                        .attr("x", x)
+                        .attr("y", y)
+                        .attr("dy", ++lineNumber * lineHeight + dy + "em")
+                        .text(word);
+        }
+    }
+  });
+}; // end wrap function
+
 // Colors
 var green = "green";
 var red = d3.rgb(212,89,84);
@@ -85,7 +125,7 @@ d3.csv('data/jungler_pair_long.csv', rowConverter, function(data) {
       .attr("y2", margin.top + (graphicMargin.h_col + graphicMargin.h_btwn)*(nPairs-1) + graphicMargin.h_col/2)
       .style("stroke", gray);
   svg.append("text")
-     .text("Paired champion")
+     .text("Paired with...")
      .attr("x", graphicMargin.w_names)
      .attr("y", margin.top-25)
      .attr("class", "dataLabel")
@@ -101,12 +141,12 @@ d3.csv('data/jungler_pair_long.csv', rowConverter, function(data) {
      .style("text-anchor", "start")
      .call(wrap, 80);
   svg.append("text")
-     .text("Individual win rate")
+     .text(currChampionName + "'s win rate")
      .attr("x", graphicMargin.w_names+graphicMargin.btwn_names+xScale_win(currAvg))
      .attr("y", margin.top-25)
      .attr("class", "dataLabel")
      .attr("id", "avgDataLabel")
-     .call(wrap, 60);
+     .call(wrapChampion);
   svg.append("text")
      .text("Paired win rate")
      .attr("x", graphicMargin.w_names+graphicMargin.btwn_names+xScale_win(+champ_subset[0].winrate.toFixed(2)))
