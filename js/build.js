@@ -364,7 +364,7 @@ d3.csv('data/jungler_pair_long.csv', rowConverter, function(data) {
   // champion names for search bar
   var championNameList = [];
   for (var i=0; i<(avg_data.length); i++) { // get a list of all champions
-    championNameList.push(avg_data[i].champ.replace("'", "\'"));
+    championNameList.push(avg_data[i].champ);
   }; // end for loop
   autocomplete(document.getElementById("searchbar"), championNameList); // autocomplete function
 
