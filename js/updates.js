@@ -3,8 +3,8 @@ var xScale_play;
 var updatexScale_play = function(subset) {
   var maxDistance = d3.min([xScale_win(currAvg), (w_dotLine-xScale_win(currAvg))]);
   xScale_play = d3.scaleLinear()
-                   .domain([d3.min(subset, function(d) { return d.n_games; }), d3.max(subset, function(d) { return d.n_games; })])
-                   .range([30, maxDistance]);
+                   .domain([0, d3.max(subset, function(d) { return d.n_games; })])
+                   .range([0, maxDistance]);
 };
 var searchedChampion;
 // Search bar functions
