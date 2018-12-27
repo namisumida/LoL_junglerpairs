@@ -645,7 +645,6 @@ var updateGraphic = function() {
       .enter()
       .append("line")
       .attr("class", "breakline")
-      .attr("x1", 0)
       .attr("x2", w_svg)
       .attr("y1", function(d,i) {
         return margin.top + (graphicMargin.h_col+graphicMargin.h_btwn)*(i)*5 - graphicMargin.h_btwn/2;
