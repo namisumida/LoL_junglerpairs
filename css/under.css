@@ -159,13 +159,13 @@ button {
 #button-win {
   background-color: rgb(79,39,79);
   color: white;
-  width: 80px;
-}
-#button-play {
   width: 90px;
 }
+#button-play {
+  width: 100px;
+}
 #button-alpha {
-  width: 125px;
+  width: 135px;
 }
 #searchbar-container {
   float: left;
@@ -177,7 +177,6 @@ button {
   margin-left: 0;
 }
 #searchbar {
-  min-width: 160px;
   height: 30px;
   margin-left: 10px;
   margin-top: 0.25em;
