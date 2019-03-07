@@ -3,54 +3,13 @@
 
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Nexus Blitz Jungler Pairs</title>
-	<link type="text/css" href="css/index.css" rel="stylesheet"/>
+	<link type="text/css" href="index.css" rel="stylesheet"/>
 
 </head>
 <body>
-	<section id="title">
-		<h1 id="title-text">Title</h1>
-		<h3 id="subtitle-text">Subtitle</h3>
-		<p id="instructions">Each circle represents a win rate for a pairing. Click on each circle to find out more about a given pairing.
-		To explore a new champion and their paired win rates, click on a new champion name in the list. Lastly, use the slider to change the minimum threshold of the number of games that the win rate is based on.</p>
-	</section>
-	<section id="graphic">
-		<svg id="title-svg" height="20px", width="100%">
-			<line id="title-line" x1="0" x2="900" y1="10" y2="10">
-		</svg>
-		<section id="options">
-			<div id="name-image-container">
-				<div id="name-container">
-					<h2 id="champion-name">Nunu</h2>
-				</div>
-				<img id="champion-icon" src="https://ddragon.leagueoflegends.com/cdn/8.23.1/img/champion/Aatrox.png" alt="Champion icon">
-			</div>
-			<div id="options-container">
-				<div id="searchbar-container">
-					<h5 id="searchbar-instructions">Search for champions:</h5>
-					<input id="searchbar" type="text" placeholder="Type name">
-				</div>
-				<div id="button-section">
-					<h5 id="button-instructions">Sort by:</h5>
-					<div id="button-container">
-						<button type="button" id="button-win" value="win">Win rate</button>
-						<button type="button" id="button-play" value="play"># of games</button>
-						<button type="button" id="button-alpha" value="alpha">Champion name</button>
-					</div>
-				</div>
-				<div id="slider-container">
-					<h5 id="slider-instructions">Show pairs with at least 200 games played:</h5>
-					<input id="slider" class="slider" type="range" min="137" max="12567" step="1" value="200" orient="horizontal"></input>
-				</div>
-			</div>
-		</section>
-		<svg id="graphic-svg" height="100%" width="100%"></svg>
-	</section>
-
-  <script src="https://d3js.org/d3.v4.min.js"></script>
-	<script src="js/avgWin.js"></script>
-	<script src="js/updates.js"></script>
-	<script src="js/build.js"></script>
+	<div id="js-junglerpairs"></div>
+  <script src="d3.min.js"></script>
+	<script src="index.min.js"></script>
 
 </body>
 </html>
