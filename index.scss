@@ -38,6 +38,7 @@ h1 {
 h3 {
   font-family: radnika-medium;
   font-size: 14px;
+  text-align: center;
 }
 p {
   font-family: radnika-regular;
@@ -47,7 +48,7 @@ h5 {
   margin: 8px;
   margin-top: 4px;
   margin-bottom: 4px;
-  color: rgb(79,39,79);
+  color: #a19da8;
   font-family: radnika-regular;
 }
 #title-line {
@@ -58,8 +59,12 @@ h5 {
   position: relative;
   margin: 0 auto;
 }
+#options-container {
+  float: right;
+  width: 65%;
+}
 #slider-container {
-  margin-left: 1em;
+  margin: 0.5em;
   position: relative;
   margin: 0.5em;
   display: flex;
@@ -114,7 +119,7 @@ button {
   -webkit-transition-duration: 0.4s; /* Safari */
   transition-duration: 0.4s;
   color: rgb(79,39,79);
-  border: 1.5px solid rgb(79,39,79);
+  border: 1px solid rgb(79,39,79);
   font-family: stratum-medium;
   cursor: pointer;
   margin-top: 0.25em;
@@ -131,7 +136,7 @@ button {
   width: 120px;
 }
 #searchbar-container {
-  margin-top: 0.5em;
+  margin-bottom: 0.5em;
   display: flex;
   flex-wrap: wrap;
 }
@@ -145,7 +150,6 @@ button {
   margin-top: 0.25em;
   font-family: radnika-regular;
   font-size: 13px;
-  height: 30px;
 }
 #searchbarautocomplete-list {
   margin-left: 170px;
@@ -205,14 +209,14 @@ button {
   fill: rgb(100,100,100);
   text-anchor: middle;
 }
-@media screen and (min-width: 590px) {
+@media screen and (min-width: 617px) {
   body,html {
     max-width: 850px;
     margin: 0 auto;
   }
   #options {
     margin: 0 auto;
-    max-width: 590px;
+    max-width: 750px;
   }
   #champion-name {
     font-family: radnika-bold;
@@ -233,7 +237,7 @@ button {
     margin-top: 0.5em;
   }
 }
-@media screen and (max-width: 590px) {
+@media screen and (max-width: 616px) {
   body,html {
     min-width: 380px;
     margin: 0 auto;
@@ -265,7 +269,7 @@ button {
     display: flex;
     flex-wrap: wrap;
     margin: 0 auto;
-    width: 80%;
+    width: 90%;
   }
   #slider-container {
     margin-left: 0;

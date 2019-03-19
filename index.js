@@ -1,5 +1,9 @@
 function init() {
   const markup = `
+  <section id="title">
+		<h1 id="title-text">Nexus Blitz jungle duos</h1>
+		<h3 id="instructions">Explore win and play rates for different combinations of your favorite junglers.</h3>
+	</section>
 	<section id="options">
 		<div id="name-image-container">
 			<div id="name-container">
@@ -9,14 +13,14 @@ function init() {
 		</div>
 		<div id="options-container">
 			<div id="searchbar-container">
-				<h5 id="searchbar-instructions">Search for champions:</h5>
-				<input id="searchbar" type="text" placeholder="Type name">
+				<h5 id="searchbar-instructions">Search for a champion:</h5>
+				<input id="searchbar" type="text" placeholder="Type in a champion name">
 			</div>
 			<div id="button-section">
 				<h5 id="button-instructions">Sort by:</h5>
 				<div id="button-container">
 					<button type="button" id="button-win" value="win">Win rate</button>
-					<button type="button" id="button-play" value="play"># of games</button>
+					<button type="button" id="button-play" value="play"># games</button>
 					<button type="button" id="button-alpha" value="alpha">Champion name</button>
 				</div>
 			</div>
@@ -585,6 +589,13 @@ function init() {
     champ_subset = dataset.filter(function(d) { return d.champ1 == currChampionName; });
     // Update xScales
     updatexScale_play(champ_subset);
+    // Update name text
+    document.getElementById("champion-name").innerHTML = currChampionName;
+    // Update icon image
+    var iconURLname = currChampionName.replace("'", "");
+    iconURLname = iconURLname.replace(".", "");
+    iconURLname = iconURLname.replace(" ", "");
+    document.getElementById("champion-icon").src = "icons/"+iconURLname+".png";
   }; // end update champion
   function updateData() {
     // Get subset
@@ -686,13 +697,6 @@ function init() {
   }; // end update button
   // Update when changes are made (like a click)
   function updateGraphic() {
-
-    // Update name text
-    document.getElementById("champion-name").innerHTML = currChampionName;
-    // Update icon image
-    if (currChampionName.includes("'")) { var iconURLname = currChampionName.replace("'", "");}
-    else { iconURLname = currChampionName; }
-
     // Update groups and exit
     pairGroup = svg.selectAll(".pairGroup").data(champ_subset);
     dotGroup = pairGroup.select(".dotGroup");
