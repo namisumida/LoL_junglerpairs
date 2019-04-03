@@ -9,7 +9,7 @@ function init() {
 			<div id="name-container">
 				<h2 id="champion-name">Nunu</h2>
 			</div>
-			<img id="champion-icon" src="https://ddragon.leagueoflegends.com/cdn/8.23.1/img/champion/Aatrox.png" alt="Champion icon">
+			<img id="champion-icon" src="icons/Nunu.png" alt="Champion icon">
 		</div>
 		<div id="options-container">
 			<div id="searchbar-container">
