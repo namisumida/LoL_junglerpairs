@@ -1,39 +1,4 @@
 function init() {
-  const markup = `
-  <section id="title">
-		<h1 id="title-text">Nexus Blitz jungle duos</h1>
-		<h3 id="instructions">Explore win and play rates for different combinations of your favorite junglers.</h3>
-	</section>
-	<section id="options">
-		<div id="name-image-container">
-			<div id="name-container">
-				<h2 id="champion-name">Nunu</h2>
-			</div>
-			<img id="champion-icon" src="icons/Nunu.png" alt="Champion icon">
-		</div>
-		<div id="options-container">
-			<div id="searchbar-container">
-				<h5 id="searchbar-instructions">Search for a champion:</h5>
-				<input id="searchbar" type="text" placeholder="Type in a champion name">
-			</div>
-			<div id="button-section">
-				<h5 id="button-instructions">Sort by:</h5>
-				<div id="button-container">
-					<button type="button" id="button-win" value="win">Win rate</button>
-					<button type="button" id="button-play" value="play"># games</button>
-					<button type="button" id="button-alpha" value="alpha">Champion name</button>
-				</div>
-			</div>
-			<div id="slider-container">
-				<h5 id="slider-instructions">Show pairs with at least 200 games played:</h5>
-				<input id="slider" class="slider" type="range" min="137" max="12567" step="1" value="200" orient="horizontal"></input>
-			</div>
-		</div>
-	</section>
-	<svg id="graphic-svg" height="100%" width="100%"></svg>
-  `
-  document.getElementById("js-junglerpairs").innerHTML = markup;
-
   var svg = d3.select("#graphic-svg");
   var w_svg = document.getElementById("graphic-svg").getBoundingClientRect().width;
   var margin = { left: 5, right: 40, top: 60, bottom: 0 }

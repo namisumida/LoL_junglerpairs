@@ -51,6 +51,9 @@ h5 {
   color: #a19da8;
   font-family: radnika-regular;
 }
+button:focus {
+  outline: none;
+}
 #title-line {
   stroke-width: 2;
   stroke: #a19da8;
@@ -145,34 +148,36 @@ button {
   margin-left: 16px;
 }
 #searchbar {
-  min-width: 160px;
-  margin-left: 10px;
-  margin-top: 0.25em;
+  border: 1px solid rgb(79,39,79);
   font-family: radnika-regular;
   font-size: 13px;
+  margin-left: 10px;
+  margin-top: 0.25em;
+  width: 160px;
 }
+input:focus { outline: none; }
 #searchbarautocomplete-list {
-  margin-left: 168px;
-  margin-top: 28px;
+  margin-left: 169px;
+  margin-top: 31px;
 }
 .autocomplete-items {
-  position: absolute;
   border: 1px solid rgb(79,39,79);
   border-bottom: none;
   border-top: none;
-  z-index: 99;
-  max-width: 150px;
   font-size: 13px;
   font-family: radnika-regular;
+  width: 160px;
+  position: absolute;
+  z-index: 99;
 }
 .autocomplete-items div {
-  padding: 10px;
-  cursor: pointer;
-  color: rgb(79,39,79);
   background-color: #fff;
   border-bottom: 1px solid #d4d4d4;
+  color: rgb(79,39,79);
+  cursor: pointer;
   font-family: radnika-regular;
   font-size: 13px;
+  padding: 5px;
 }
 .autocomplete-items div:hover {
   /*when hovering an item:*/
